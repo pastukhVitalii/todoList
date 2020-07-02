@@ -145,11 +145,50 @@ export const setTasksAC = (tasks, todolistId) => {
   }
 }
 
-export const setTodolistsTC = () => (dispatch, getState) => {
+export const setTodolistsTC = () => (dispatch) => {
   // debugger;
   api.getTodolist()
     .then(res => {
       // debugger
       dispatch(setTodolistAC(res));
+    });
+}
+export const addTodolistTC = (title) => (dispatch) => {
+  api.createTodolist(title)
+    .then(res => {
+      let todolist = res.data.item;
+      dispatch(addTodolistAC(todolist));
+    });
+}
+export const setTaskTC = (todolistId) => (dispatch) => {
+  api.getTasks(todolistId)
+    .then(res => {
+      // debugger
+      dispatch(setTasksAC(res.items, todolistId));
+    });
+}
+
+export const deleteTodolistTC = (todolistId) => (dispatch) => {
+  api.deleteTodolist(todolistId)
+    .then(res => {
+      // debugger
+      dispatch(deleteTodolistAC(todolistId));
+    });
+}
+
+export const updateTodolistTC = (title, todolistId) => (dispatch) => {
+  api.updateTitleTodolist(title, todolistId)
+    .then(res => {
+      if (res.resultCode === 0) {
+        dispatch(updateTodolistAC({id: todolistId, title: title}))
+      }
+    })
+}
+
+export const addTaskTC = (newText, todolistId) => (dispatch) => {
+  api.createTask(newText, todolistId)
+    .then(res => {
+      // debugger;
+      dispatch(addTaskAC(res.data.data.item, todolistId));
     });
 }

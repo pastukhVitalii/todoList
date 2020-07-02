@@ -3,18 +3,22 @@ import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
-import {addTodolistAC, setTodolistAC, setTodolistsTC} from "./reducer";
-import {api} from "./api/api";
+import {addTodolistTC, setTodolistAC, setTodolistsTC} from "./reducer";
 
 class App extends React.Component {
 
+  componentDidMount() {
+    this.restoreState();
+  };
+
   addTodoList = (title) => {
+    this.props.addTodo(title);
     // debugger;
-    api.createTodolist(title)
+    /*api.createTodolist(title)
       .then(res => {
         // debugger
         this.props.createTodolists(res.data.item);
-      });
+      });*/
   };
 
   restoreState = () => {
@@ -25,10 +29,6 @@ class App extends React.Component {
         this.props.setTodolists(res);
       });*/
   }
-
-  componentDidMount() {
-    this.restoreState();
-  };
 
   render = () => {
     // debugger;
@@ -63,17 +63,20 @@ const mapDispatchToProps = (dispatch) => {
       const action = setTodolistAC(newTodolist);
       dispatch(action)
     },
-    createTodolists: (newTodolist) => {
-      /*let action = {
+    /*createTodolists: (newTodolist) => {
+      /!*let action = {
         type: 'CREATE_TODOLIST',
         newTodolist
-      };*/
+      };*!/
       const action = addTodolistAC(newTodolist);
       dispatch(action);
-    },
+    },*/
     getTodo: () => {
       const thunk = setTodolistsTC();
       dispatch(thunk);
+    },
+    addTodo: (title) => {
+      dispatch(addTodolistTC(title));
     }
   }
 }
