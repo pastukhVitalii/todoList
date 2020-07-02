@@ -22,6 +22,7 @@ class TodoListTitle extends React.Component {
   onTitleChanged = (e) => {
     this.setState({title: e.currentTarget.value})
   }
+
   render = () => {
     return (
       <div className="todoList-header">

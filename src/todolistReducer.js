@@ -2,7 +2,7 @@ import {api} from "./api/api";
 
 export const CREATE_TODOLIST = 'TodoApp/TodoList/CREATE_TODOLIST';
 export const ADD_TASK = 'TodoApp/TodoList/ADD_TASK';
-export const CHANGE_TASK = 'TodoApp/TodoList/CHANGE_TASK';
+export const UPDATE_TASK = 'TodoApp/TodoList/UPDATE_TASK';
 export const DELETE_TODOLIST = 'TodoApp/TodoList/DELETE_TODOLIST';
 export const DELETE_TASK = 'TodoApp/TodoList/DELETE_TASK';
 export const SET_TODOLIST = "TodoList/Reducer/SET_TODOLIST";
@@ -12,7 +12,7 @@ export const UPDATE_TITLE_TODOLIST = "TodoList/Reducer/UPDATE_TITLE_TODOLIST";
 const initialState = {
   todolists: []
 }
-const reducer = (state = initialState, action) => {
+const todolistReducer = (state = initialState, action) => {
   // debugger;
   switch (action.type) {
     case SET_TODOLIST:
@@ -62,7 +62,8 @@ const reducer = (state = initialState, action) => {
           }
         })
       }
-    case CHANGE_TASK:
+    case UPDATE_TASK:
+      debugger
       return {
         ...state,
         todolists: state.todolists.map(tl => {
@@ -70,7 +71,7 @@ const reducer = (state = initialState, action) => {
             return {
               ...tl,
               tasks: tl.tasks.map(t => {
-                if (t.id != action.taskId) {
+                if (t.id !== action.taskId) {
                   return t;
                 } else {
                   return {...t, ...action.obj};
@@ -103,10 +104,10 @@ const reducer = (state = initialState, action) => {
         })
       }
   }
-return state
+  return state
 }
 
-export default reducer;
+export default todolistReducer;
 export const addTodolistAC = (todolist) => {
   return {
     type: CREATE_TODOLIST,
@@ -119,7 +120,7 @@ export const updateTodolistAC = (todolist) => {
 export const addTaskAC = (newTask, todolistId) => {
   return {type: ADD_TASK, newTask, todolistId};
 }
-export const deleteTaskAC = (todolistId, taskId) => {
+export const deleteTaskAC = (taskId, todolistId) => {
   return {type: DELETE_TASK, todolistId, taskId};
 }
 export const deleteTodolistAC = (todolistId) => {
@@ -128,9 +129,7 @@ export const deleteTodolistAC = (todolistId) => {
     todolistId
   }
 }
-export const changeTaskAC = (taskId, obj, todolistId) => {
-  return {type: CHANGE_TASK, taskId, obj, todolistId};
-}
+export const updateTaskAC = (taskId, todolistId, obj) => ({type: UPDATE_TASK, taskId, todolistId, obj});
 
 export const setTodolistAC = (todolists) => {
   return {
@@ -144,6 +143,8 @@ export const setTasksAC = (tasks, todolistId) => {
     tasks, todolistId
   }
 }
+
+// THUNK
 
 export const setTodolistsTC = () => (dispatch) => {
   // debugger;
@@ -190,5 +191,22 @@ export const addTaskTC = (newText, todolistId) => (dispatch) => {
     .then(res => {
       // debugger;
       dispatch(addTaskAC(res.data.data.item, todolistId));
+    });
+}
+
+export const updateTaskTC = (taskId, todolistId, task) => (dispatch, getState) => {
+  api.updateTask(taskId, todolistId, task)
+    .then(res => {
+      debugger;
+      dispatch(updateTaskAC(taskId, todolistId, task));
+    });
+}
+
+export const deleteTaskTC = (taskId, todolistId) => (dispatch, getState) => {
+  debugger;
+  api.deleteTask(taskId, todolistId)
+    .then(res => {
+      // debugger
+      dispatch(deleteTaskAC(taskId, todolistId));
     });
 }
