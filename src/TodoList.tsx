@@ -8,27 +8,51 @@ import AddNewItemForm from "./TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
 import {
   addTaskTC,
-  deleteTaskAC, deleteTaskTC,
+  deleteTaskTC,
   deleteTodolistTC,
-  setTaskTC, updateTaskAC, updateTaskTC,
+  setTaskTC, updateTaskTC,
   updateTodolistTC
 } from "./todolistReducer";
+import {TaskType, TodoType, TodoUpdateObject} from "./types/entities";
+import {AppStateType} from "./store";
 
-class TodoList extends React.Component {
+type StateType = {
+    filterValue: string
+}
 
-  state = {
-    /*tasks: [
-      /!*{id: 1, title: "HTML", isDone: true, priority: "high"},
-      {id: 2, title: "css", isDone: true, priority: "high"},
-      {id: 3, title: "js", isDone: true, priority: "low"},
-      {id: 4, title: "react", isDone: false, priority: "high"}*!/
-    ],*/
+type OwnPropsType = {
+    id: string
+    title: string
+    newFilterValue: string
+    newText: string
+    tasks: Array<TaskType>
+    setTask: (id: string) => void
+    deleteTodolists: (id: string) => void
+    updateTodolist: (title: string, id: string) => void
+    addTask: (newText: string, id: string) => void
+    updateTask: (taskId: string, id: string, task: {status: number, title: string}) => void
+    changeTask: (task: {status: number, title: string}, obj: {status: number}) => void
+    deleteteTask: (taskId: string, id: string) => void
+}
+
+type MapDispatchPropsType = {
+    setTaskTC: (todolistId: string) => void
+    deleteTodolistTC: (todolistId: string) => void
+    updateTodolistTC: (todolist: TodoType, todolistId: string) => void
+    addTaskTC: (newText: string, todolistId: string) => void
+    updateTaskTC: (taskId: string, obj: TodoUpdateObject, todolistId: string) => void
+    deleteTaskTC: (taskId: string, todolistId: string) => void
+}
+
+class TodoList extends React.Component<OwnPropsType & MapDispatchPropsType, StateType> {
+
+  state: StateType = {
+
     filterValue: "All"
   };
   nextTaskId = 10;
 
   componentDidMount() {
-
     this.props.setTask(this.props.id);
   }
 
@@ -37,51 +61,44 @@ class TodoList extends React.Component {
 
   };
 
-  updateTodolist = (title) => {
+  updateTodolist = (title: string) => {
     this.props.updateTodolist(title, this.props.id)
   }
 
-  addTask = (newText) => {
+  addTask = (newText: string) => {
     this.props.addTask(newText, this.props.id)
   }
 
-  changeFilter = (newFilterValue) => {
+  changeFilter = (newFilterValue: string) => {
     this.setState({filterValue: newFilterValue});
   };
 
-  changeTask = (taskId, obj) => {
+  changeTask = (taskId: string, obj: TodoUpdateObject) => {
     debugger;
     let changedTask = this.props.tasks.find(task => {
       return task.id === taskId
     });
 
-    let task = {...changedTask, ...obj};
-    this.props.updateTask(taskId, this.props.id, task)
+    // if(obj &  obj.title & obj.status) {
+        let task = {...changedTask, ...obj};
+        this.props.updateTask(taskId, this.props.id, task)
+    // }
+
   };
 
-  changeStatus = (task, isDone) => {
-    debugger;
-    this.changeTask(task, {status: isDone ? 2 : 0});
+  changeStatus = (task: string, status: number ) => {
+    // debugger;
+    this.changeTask(task, {status});
   }
 
-  changeTitle = (task, title) => {
-    debugger;
+  changeTitle = (task: string, title: string) => {
+    // debugger;
     this.changeTask(task, {title: title});
   }
 
-  deleteTask = (taskId) => {
-    debugger;
+  deleteTask = (taskId: string) => {
+    // debugger;
     this.props.deleteteTask(taskId, this.props.id)
-    /*// debugger;
-    axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/${this.props.id}/tasks/${taskId}`,
-      {
-        withCredentials: true,
-        headers: {"API-KEY": "0fdd1160-d444-4949-8fed-55c8b35e8906"}
-      })
-      .then(res => {
-        // debugger
-        this.props.deleteTask(taskId, this.props.id);
-      });*/
   }
 
   render = () => {
@@ -121,14 +138,14 @@ class TodoList extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+/*const mapDispatchToProps = (dispatch) => {
   // debugger;
   return {
-    /*updateTask: (todolistId, taskId, obj) => {
+    /!*updateTask: (todolistId, taskId, obj) => {
       debugger;
       const action = updateTaskAC(todolistId, taskId, obj);
       dispatch(action)
-    },*/
+    },*!/
 
     deleteTask: (taskId, todolistId) => {
       const action = deleteTaskAC(todolistId, taskId);
@@ -154,8 +171,16 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(deleteTaskTC(taskId, todolistId))
     }
   }
-}
-export default connect(null, mapDispatchToProps)(TodoList);
+}*/
+
+export default connect<{}, MapDispatchPropsType, OwnPropsType, AppStateType>(null, {
+    setTaskTC,
+    deleteTodolistTC,
+    updateTodolistTC,
+    addTaskTC,
+    updateTaskTC,
+    deleteTaskTC
+})(TodoList);
 
 
 
