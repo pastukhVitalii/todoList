@@ -83,7 +83,6 @@ class TodoList extends React.Component<OwnPropsType & MapDispatchPropsType, Stat
         let task = {...changedTask, ...obj};
         this.props.updateTask(taskId, this.props.id, task)
     // }
-
   };
 
   changeStatus = (task: string, status: number ) => {
