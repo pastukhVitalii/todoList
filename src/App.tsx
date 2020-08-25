@@ -7,10 +7,6 @@ import {addTodolistTC, setTodolistsTC} from "./todolistReducer";
 import {AppStateType} from "./store";
 import {TodoType} from "./types/entities";
 
-type OwnPropsType = {
-    title: string
-}
-
 type MapStatePropsType = {
     todolists: Array<TodoType>
     loading: boolean
@@ -21,47 +17,35 @@ type MapDispatchPropsType = {
     addTodolistTC: (title: string) => void;
 }
 
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
+type PropsType = MapStatePropsType & MapDispatchPropsType;
 
 class App extends React.Component<PropsType> {
 
     componentDidMount() {
-        // this.props.title;
         this.restoreState();
     };
 
     addTodoList = (title: string) => {
         this.props.addTodolistTC(title);
-        // debugger;
-        /*api.createTodolist(title)
-          .then(res => {
-            // debugger
-            this.props.createTodolists(res.data.item);
-          });*/
     };
 
     restoreState = () => {
         this.props.setTodolistsTC();
-        /*api.getTodolist()
-          .then(res => {
-            // debugger
-            this.props.setTodolists(res);
-          });*/
     }
 
     render = () => {
-        // debugger;
         const todolist = this.props.todolists.map(tl =>
             <TodoList key={tl.id}
                       id={tl.id}
                       title={tl.title}
-                      tasks={tl.task}
+                      tasks={tl.tasks}
             />)
         return (
             <div>
-                <div>
-                    <AddNewItemForm addItem={this.addTodoList}/>
-                </div>
+                <>
+                    <AddNewItemForm addItem={this.addTodoList} placeholder={'Create a new task list'}
+                                    btnName={'Create'}/>
+                </>
                 <div className="App">
                     {this.props.loading ? <span>Loading...</span> : todolist}
                 </div>
@@ -77,19 +61,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 
-/*const mapDispatchToProps = (dispatch) => {
-  return {
-    getTodo: () => {
-      const thunk = setTodolistsTC();
-      dispatch(thunk);
-    },
-    addTodo: (title) => {
-      dispatch(addTodolistTC(title));
-    }
-  }
-}*/
-
-const ConnectedApp = connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+const ConnectedApp = connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
     setTodolistsTC,
     addTodolistTC
 })(App);

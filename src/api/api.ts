@@ -60,6 +60,7 @@ export const api = {
       .then(res => res.data)
   },
   getTasks(todolistId: string) {
+      // debugger
     return instance.get(`/${todolistId}/tasks`)
       .then(res => res.data)
   },
@@ -73,11 +74,9 @@ export const api = {
     return instance.post<CommonApiType<{item: TaskType}>>(`/${todolistId}/tasks`,{title: newText});
   },
   updateTask(taskId: string, todolistId: string, task: TaskType) {
-    debugger;
     return instance.put<CommonApiType<{item: TaskType }>>(`/${todolistId}/tasks/${taskId}`, task);
   },
   deleteTask(taskId: string, todolistId: string) {
-    debugger;
     return instance.delete<CommonApiType<{ }>>(`/${todolistId}/tasks/${taskId}`);
   }
 }

@@ -1,14 +1,15 @@
-export  type TodoType = {
+export type TodoType = {
     id: string
     addedDate: string
     order: number
     title: string
-    task: Array<TaskType>
+    tasks: Array<TaskType>
 }
 
 export type TodoUpdateObject = {
     status?: number
     title?: string
+    priority?: number
 }
 
 export type TaskType = {
@@ -23,4 +24,5 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
+    loading: boolean
 }

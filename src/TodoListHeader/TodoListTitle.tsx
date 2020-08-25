@@ -1,4 +1,6 @@
 import React, {ChangeEvent} from "react";
+import '../TodoList.css'
+import Button from "../common/Button/Button";
 
 type StateType = {
     editMode: boolean,
@@ -10,6 +12,7 @@ type OwnPropsType = {
     todolistId: string
     deleteTodolist: (todolistId: string) => void
     updateTodolist: (title: string) => void
+    name: string
 }
 
 class TodoListTitle extends React.Component<OwnPropsType, StateType> {
@@ -19,7 +22,6 @@ class TodoListTitle extends React.Component<OwnPropsType, StateType> {
         title: ''
     }
     onDelete = () => {
-        // debugger
         this.props.deleteTodolist(this.props.todolistId)
     }
     activateEditMode = () => {
@@ -38,14 +40,14 @@ class TodoListTitle extends React.Component<OwnPropsType, StateType> {
     render = () => {
         return (
             <div className="todoList-header">
-                <h3 className="todoList-header__title">
+                <span className="todoList-header-title">
                     {this.state.editMode
                         ? <input onBlur={this.deactivateEditMode} onChange={this.onTitleChanged} autoFocus={true}
                                  defaultValue={this.props.title}/>
                         : <span onClick={this.activateEditMode}>{this.props.title}</span>
                     }
-                </h3>
-                <button onClick={this.onDelete}>X</button>
+                </span>
+                <Button type={'primary'} small={true} onClick={this.onDelete} btnName={this.props.name}/>
             </div>
         )
     }
