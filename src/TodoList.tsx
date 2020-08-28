@@ -24,6 +24,7 @@ type OwnPropsType = {
     id: string
     title: string
     tasks: Array<TaskType>
+    loadingTasks: boolean
 }
 
 type MapDispatchPropsType = {
@@ -115,6 +116,7 @@ class TodoList extends React.Component<OwnPropsType & MapDispatchPropsType, Stat
                         changePriority={this.changePriority}
                         tasks={tasksFilter}
                         deleteTask={this.deleteTask}
+                        loadingTasks={this.props.loadingTasks}
                     />
                     <TodoListFooter filterValue={this.state.filterValue} changeFilter={this.changeFilter}/>
                 </div>

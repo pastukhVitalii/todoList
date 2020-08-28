@@ -9,6 +9,7 @@ type OwnPropsType = {
     changeTitle: (id: string, title: string) => void
     changePriority: (id: string, priority: number) => void
     deleteTask: (id: string) => void
+    loadingTasks: boolean
 }
 class TodoListTasks extends React.Component<OwnPropsType> {
   render = () => {
@@ -26,7 +27,8 @@ class TodoListTasks extends React.Component<OwnPropsType> {
     });
     return (
       <div className="todoList-tasks">
-          { this.props.tasks.length === 0? <div>Loading...</div>: tasksElements }
+          {this.props.loadingTasks?<div>Loading...</div> : tasksElements}
+          {this.props.tasks.length === 0 && !this.props.loadingTasks? <div>Hey create a new tasks</div>:  <span></span> }
       </div>
     )
   }
