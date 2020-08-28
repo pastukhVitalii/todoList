@@ -26,7 +26,7 @@ class TodoListTasks extends React.Component<OwnPropsType> {
     });
     return (
       <div className="todoList-tasks">
-          { this.props.tasks.length === 0? <div>Loading...</div>: tasksElements }
+          { this.props.tasks.length === 0? <div> Hey create new tasks</div>: tasksElements }
       </div>
     )
   }

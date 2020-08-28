@@ -9,7 +9,8 @@ import {TodoType} from "./types/entities";
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
-    loading: boolean
+    loadingTodo: boolean
+    loadingTasks: boolean
 }
 
 type MapDispatchPropsType = {
@@ -39,6 +40,7 @@ class App extends React.Component<PropsType> {
                       id={tl.id}
                       title={tl.title}
                       tasks={tl.tasks}
+                      loadingTasks={this.props.loadingTasks}
             />)
         return (
             <div>
@@ -47,7 +49,7 @@ class App extends React.Component<PropsType> {
                                     btnName={'Create'}/>
                 </>
                 <div className="App">
-                    {this.props.loading ? <span>Loading...</span> : todolist}
+                    {this.props.loadingTodo ? <span>Loading...</span> : todolist}
                 </div>
             </div>
         );
@@ -57,7 +59,8 @@ class App extends React.Component<PropsType> {
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         todolists: state.todolist.todolists,
-        loading: state.todolist.loading
+        loadingTodo: state.todolist.loadingTodo,
+        loadingTasks: state.todolist.loadingTasks
     }
 }
 

@@ -24,5 +24,5 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
-    loading: boolean
+    loadingTasks?: boolean
 }

@@ -12,17 +12,19 @@ export const SET_TODOLIST = "TodoList/Reducer/SET_TODOLIST";
 export const SET_TODOLIST_ERROR = "TodoList/Reducer/SET_TODOLIST_ERROR";
 export const SET_TASKS = "TodoList/Reducer/SET_TASKS";
 export const UPDATE_TITLE_TODOLIST = "TodoList/Reducer/UPDATE_TITLE_TODOLIST";
-export const LOADING = "TodoList/Reducer/LOADING";
+export const LOADING_TODO = "TodoList/Reducer/LOADING_TODO";
 export const LOADING_TASKS = "TodoList/Reducer/LOADING_TASKS";
 
 type initialStateType = {
     todolists: Array<TodoType>
-    loading: boolean,
+    loadingTodo: boolean,
+    loadingTasks: boolean,
 }
 
 const initialState: initialStateType = {
     todolists: [],
-    loading: false,
+    loadingTodo: false,
+    loadingTasks: false,
 }
 const todolistReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
     switch (action.type) {
@@ -110,10 +112,15 @@ const todolistReducer = (state: initialStateType = initialState, action: Actions
                     }
                 })
             }
-        case LOADING:
+        case LOADING_TODO:
             return {
-                ...state, loading: action.isActive
+                ...state, loadingTodo: action.isActive
             }
+            case LOADING_TASKS:
+            return {
+                ...state, loadingTasks: action.isActive
+            }
+
         /*case SET_TODOLIST_ERROR:
             return {
                 ...state, //error: 'error'
@@ -176,7 +183,7 @@ type GetTodolistsSuccessActionType = {
     todolists: Array<TodoType>
 }
 type LoadingTodolistActionType = {
-    type: typeof LOADING
+    type: typeof LOADING_TODO
     isActive: boolean
 }
 type LoadingTasksActionType = {
@@ -189,31 +196,41 @@ type LoadingTasksActionType = {
 export const addTodolistAC = (todolist: TodoType): AddTodolistSuccessActionType => {
     return {type: CREATE_TODOLIST, newTodolist: todolist}
 }
+
 export const updateTodolistAC = (title: string, todolistId: string): UpdateTodolistTitleSuccessActionType => {
     return {type: UPDATE_TITLE_TODOLIST, title, todolistId}
 }
+
 export const addTaskAC = (newTask: TaskType, todolistId: string): AddTaskSuccessActionType => {
     return {type: ADD_TASK, newTask, todolistId};
 }
+
 export const deleteTaskAC = (taskId: string, todolistId: string): DeleteTaskSuccessActionType => {
     return {type: DELETE_TASK, taskId, todolistId};
 }
+
 export const deleteTodolistAC = (todolistId: string): DeleteTodoSuccessActionType => {
     return {type: DELETE_TODOLIST, todolistId}
 }
+
 /*export const setTodolistError = (todolists: Array<TodoType>) => {
     return {type: SET_TODOLIST_ERROR}
 }*/
+
 export const updateTaskAC = (taskId: string, todolistId: string, obj: TodoUpdateObject): UpdateTaskSuccessActionType => ({
     type: UPDATE_TASK,
     taskId,
     todolistId,
     obj
 });
-export const loadingTodolistAC = (isActive: boolean): LoadingTodolistActionType => ({type: LOADING, isActive});
+
+export const loadingTodolistAC = (isActive: boolean): LoadingTodolistActionType => ({type: LOADING_TODO, isActive});
+export const loadingTasksAC = (isActive: boolean): LoadingTasksActionType => ({type: LOADING_TASKS, isActive});
+
 export const setTodolistAC = (todolists: Array<TodoType>): GetTodolistsSuccessActionType => {
     return {type: SET_TODOLIST, todolists: todolists}
 }
+
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): GetTasksSuccessActionType => {
     return {type: SET_TASKS, tasks, todolistId}
 }
@@ -221,12 +238,15 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): GetTasks
 // THUNK
 
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionsType>;
+
 type ThunkDispatch1 = ThunkDispatch<AppStateType, unknown, ActionsType>;
 
 export const setTaskTC = (todolistId: string): ThunkType => (dispatch: ThunkDispatch1) => {
+    dispatch(loadingTasksAC(true))
     api.getTasks(todolistId)
         .then(res => {
             dispatch(setTasksAC(res.items, todolistId));
+            dispatch(loadingTasksAC(false))
         });
 }
 export const deleteTodolistTC = (todolistId: string) => (dispatch: ThunkDispatch1) => {
@@ -243,24 +263,28 @@ export const updateTodolistTC = (title: string, todolistId: string) => (dispatch
             }
         })
 }
+
 export const addTaskTC = (newText: string, todolistId: string) => (dispatch: ThunkDispatch1) => {
     api.createTask(newText, todolistId)
         .then(res => {
             dispatch(addTaskAC(res.data.data.item, todolistId));
         });
 }
+
 export const updateTaskTC = (taskId: string, todolistId: string, task: TaskType) => (dispatch: ThunkDispatch1) => {
     api.updateTask(taskId, todolistId, task)
         .then(res => {
             dispatch(updateTaskAC(taskId, todolistId, task));
         });
 }
+
 export const deleteTaskTC = (taskId: string, todolistId: string) => (dispatch: ThunkDispatch1) => {
     api.deleteTask(taskId, todolistId)
         .then(res => {
             dispatch(deleteTaskAC(taskId, todolistId));
         });
 }
+
 export const setTodolistsTC = (): ThunkType => (dispatch: ThunkDispatch1) => {
     dispatch(loadingTodolistAC(true))
     api.getTodolist()
@@ -272,6 +296,7 @@ export const setTodolistsTC = (): ThunkType => (dispatch: ThunkDispatch1) => {
         dispatch(setTodolistError())
     })*/
 }
+
 export const addTodolistTC = (title: string) => (dispatch: ThunkDispatch1) => {
     api.createTodolist(title)
         .then(res => {

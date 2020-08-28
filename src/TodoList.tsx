@@ -24,6 +24,7 @@ type OwnPropsType = {
     id: string
     title: string
     tasks: Array<TaskType>
+    loadingTasks: boolean
 }
 
 type MapDispatchPropsType = {
@@ -82,7 +83,7 @@ class TodoList extends React.Component<OwnPropsType & MapDispatchPropsType, Stat
 
     changePriority = (task: string, priority: number) => {
         this.changeTask(task, {priority: priority})
-}
+    }
 
     deleteTask = (taskId: string) => {
         this.props.deleteTaskTC(taskId, this.props.id)
@@ -103,19 +104,19 @@ class TodoList extends React.Component<OwnPropsType & MapDispatchPropsType, Stat
         return (
             <div className="App">
                 <div className="todoList">
-                        <TodoListTitle name={'Delete'}
-                                       title={this.props.title}
-                                       todolistId={this.props.id}
-                                       deleteTodolist={this.deleteTodolist}
-                                       updateTodolist={this.updateTodolist}/>
-                        <AddNewItemForm addItem={this.addTask} placeholder={'Create task'} btnName={'Create'}/>
-                    <TodoListTasks
+                    <TodoListTitle name={'Delete'}
+                                   title={this.props.title}
+                                   todolistId={this.props.id}
+                                   deleteTodolist={this.deleteTodolist}
+                                   updateTodolist={this.updateTodolist}/>
+                    <AddNewItemForm addItem={this.addTask} placeholder={'Create task'} btnName={'Create'}/>
+                    {this.props.loadingTasks ? <span>Loading...</span>: <TodoListTasks
                         changeStatus={this.changeStatus}
                         changeTitle={this.changeTitle}
                         changePriority={this.changePriority}
                         tasks={tasksFilter}
                         deleteTask={this.deleteTask}
-                    />
+                    />}
                     <TodoListFooter filterValue={this.state.filterValue} changeFilter={this.changeFilter}/>
                 </div>
             </div>
