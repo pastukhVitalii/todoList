@@ -14,18 +14,29 @@ export const SET_TASKS = "TodoList/Reducer/SET_TASKS";
 export const UPDATE_TITLE_TODOLIST = "TodoList/Reducer/UPDATE_TITLE_TODOLIST";
 export const LOADING_TODO = "TodoList/Reducer/LOADING_TODO";
 export const LOADING_TASKS = "TodoList/Reducer/LOADING_TASKS";
+export const SET_USER_DATA = "TodoList/Reducer/SET_USER_DATA";
+export const LOGIN_SUCCESS = "TodoList/Reducer/LOGIN_SUCCESS";
 
 type initialStateType = {
     todolists: Array<TodoType>
     loadingTodo: boolean,
     loadingTasks: boolean,
+    userId: string,
+    email: string,
+    login: string,
+    isAuth: boolean
 }
 
 const initialState: initialStateType = {
     todolists: [],
     loadingTodo: false,
-    loadingTasks: false
+    loadingTasks: false,
+    userId: '',
+    email: '',
+    login: '',
+    isAuth: false
 }
+
 const todolistReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
     switch (action.type) {
         case SET_TODOLIST:
@@ -124,6 +135,15 @@ const todolistReducer = (state: initialStateType = initialState, action: Actions
             return {
                 ...state, //error: 'error'
             }*/
+
+        case SET_USER_DATA:
+            return {
+                ...state, login: action.login, isAuth: true
+            }
+            case LOGIN_SUCCESS:
+            return {
+                ...state, isAuth: true
+            }
     }
     return state
 }
@@ -141,6 +161,8 @@ type ActionsType =
     | GetTodolistsSuccessActionType
     | LoadingTodoActionType
     | LoadingTasksActionType
+    | SetAuthUserDataActionType
+    | LoginSuccessActionType
 
 
 type UpdateTaskSuccessActionType = {
@@ -189,6 +211,15 @@ type LoadingTasksActionType = {
     type: typeof LOADING_TASKS
     isActive: boolean
 }
+type SetAuthUserDataActionType = {
+    type: typeof SET_USER_DATA
+    userId: string
+    login: string
+    email: string
+}
+type LoginSuccessActionType = {
+    type: typeof LOGIN_SUCCESS
+}
 
 // Action creator
 
@@ -223,6 +254,12 @@ export const setTodolistAC = (todolists: Array<TodoType>): GetTodolistsSuccessAc
 }
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): GetTasksSuccessActionType => {
     return {type: SET_TASKS, tasks, todolistId}
+}
+export const setAuthUserDataAC = (userId: string | any, login: string | any, email: string | any): SetAuthUserDataActionType => {
+    return {type: SET_USER_DATA, userId, login, email}
+}
+export const loginSuccess = (): LoginSuccessActionType => {
+    return {type: LOGIN_SUCCESS}
 }
 
 // THUNK
@@ -286,5 +323,24 @@ export const addTodolistTC = (title: string) => (dispatch: ThunkDispatch1) => {
         .then(res => {
             let todolist = res.data.item;
             dispatch(addTodolistAC(todolist));
+        });
+}
+export const setAuthUserDataTC = () => (dispatch: ThunkDispatch1) => {
+    return api.me()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                let id = response.data.data.id;
+                let login = response.data.data.login;
+                let email = response.data.data.email;
+                dispatch(setAuthUserDataAC(id, login, email));
+            }
+        });
+}
+export const signInTC = (login: string, email: string) => (dispatch: ThunkDispatch1) => {
+    return api.me1(login, email)
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(loginSuccess());
+            }
         });
 }

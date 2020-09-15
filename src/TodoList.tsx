@@ -10,7 +10,7 @@ import {
     addTaskTC,
     deleteTaskTC,
     deleteTodolistTC,
-    setTaskTC, updateTaskTC,
+    setTaskTC, signInTC, updateTaskTC,
     updateTodolistTC
 } from "./todolistReducer";
 import {TaskType, TodoUpdateObject} from "./types/entities";
@@ -29,6 +29,7 @@ type OwnPropsType = {
 
 type MapDispatchPropsType = {
     setTaskTC: (todolistId: string) => void
+    signInTC: (login: string, email: string) => void
     deleteTodolistTC: (todolistId: string) => void
     updateTodolistTC: (title: string, todolistId: string) => void
     addTaskTC: (newText: string, todolistId: string) => void
@@ -127,6 +128,7 @@ class TodoList extends React.Component<OwnPropsType & MapDispatchPropsType, Stat
 
 const ConnectedTodoList = connect<{}, MapDispatchPropsType, OwnPropsType, AppStateType>(null, {
     setTaskTC,
+    signInTC,
     deleteTodolistTC,
     updateTodolistTC,
     addTaskTC,

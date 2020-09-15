@@ -3,19 +3,23 @@ import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
-import {addTodolistTC, setTodolistsTC} from "./todolistReducer";
+import {addTodolistTC, setAuthUserDataTC, setTodolistsTC} from "./todolistReducer";
 import {AppStateType} from "./store";
 import {TodoType} from "./types/entities";
+import Button from "./common/Button/Button";
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
     loadingTodo: boolean
     loadingTasks: boolean
+    login: string
+    isAuth: boolean
 }
 
 type MapDispatchPropsType = {
     setTodolistsTC: () => void;
     addTodolistTC: (title: string) => void;
+    setAuthUserDataTC: () => void;
 }
 
 type PropsType = MapStatePropsType & MapDispatchPropsType;
@@ -24,6 +28,7 @@ class App extends React.Component<PropsType> {
 
     componentDidMount() {
         this.restoreState();
+        this.props.setAuthUserDataTC();
     };
 
     addTodoList = (title: string) => {
@@ -48,6 +53,9 @@ class App extends React.Component<PropsType> {
                     <AddNewItemForm addItem={this.addTodoList} placeholder={'Create a new task list'}
                                     btnName={'Create'}/>
                 </>
+                <div className="authorization">
+                    {this.props.isAuth? this.props.login:<Button btnName={'Login'} type={'primary'} onClick={() =>alert('ddd')} small={true}/>}
+                </div>
                 <div className="App">
                     {this.props.loadingTodo ? <span>Loading...</span> : todolist}
                 </div>
@@ -60,13 +68,16 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         todolists: state.todolist.todolists,
         loadingTodo: state.todolist.loadingTodo,
-        loadingTasks: state.todolist.loadingTasks
+        loadingTasks: state.todolist.loadingTasks,
+        login: state.todolist.login,
+        isAuth: state.todolist.isAuth
     }
 }
 
 const ConnectedApp = connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
     setTodolistsTC,
-    addTodolistTC
+    addTodolistTC,
+    setAuthUserDataTC
 })(App);
 export default ConnectedApp;
 

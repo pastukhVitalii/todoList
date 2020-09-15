@@ -1,3 +1,10 @@
+.authorization {
+    float: right;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+}
+
 .todoList {
     width: 300px;
     border: 1px solid black;
@@ -64,6 +71,7 @@
     border: none;
     margin-left: 10px;
 }
+
 .todoList-footer-btn {
     width: 280px;
     display: flex;

@@ -2,7 +2,7 @@ import axios from "axios";
 import {TaskType, TodoType} from "../types/entities";
 
 const instance = axios.create({
-  baseURL: "https://social-network.samuraijs.com/api/1.1/todo-lists",
+  baseURL: "https://social-network.samuraijs.com/api/1.1",
   withCredentials: true,
   headers: {"API-KEY": "eec707e4-21e7-4972-ae6a-c9f0a894d660"}
 })
@@ -19,7 +19,8 @@ messages: [],
 type CommonApiType<T> = {
     resultCode: 0| 1 | 100
     messages: Array<string>
-    data: T
+    data: T,
+
 }
 
 /*type CreateTodoType = {
@@ -46,37 +47,38 @@ type ResponseTaskType3 = {
 export const api = {
 
   createTodolist(title: string) {
-    // debugger;
-    return instance.post<CommonApiType<{item: TodoType}>>("",{title: title})
+    return instance.post<CommonApiType<{item: TodoType}>>("todo-lists",{title: title})
       .then(res => res.data);
   },
   updateTitleTodolist(title: string, todolistId: string) {
-    // debugger;
-    return instance.put(`/${todolistId}/`,{title: title})
+    return instance.put(`/todo-lists/${todolistId}/`,{title: title})
       .then(res => res.data);
   },
   getTodolist() {
-    return instance.get("" )
+    return instance.get("todo-lists" )
       .then(res => res.data)
   },
   getTasks(todolistId: string) {
-      // debugger
-    return instance.get(`/${todolistId}/tasks`)
+    return instance.get(`/todo-lists/${todolistId}/tasks`)
       .then(res => res.data)
   },
   deleteTodolist(todolistId: string) {
-    // debugger;
-    return instance.delete(`/${todolistId}`)
+    return instance.delete(`/todo-lists/${todolistId}`)
       .then(res => res.data)
   },
   createTask(newText: string, todolistId: string) {
-    // debugger;
-    return instance.post<CommonApiType<{item: TaskType}>>(`/${todolistId}/tasks`,{title: newText});
+    return instance.post<CommonApiType<{item: TaskType}>>(`/todo-lists/${todolistId}/tasks`,{title: newText});
   },
   updateTask(taskId: string, todolistId: string, task: TaskType) {
-    return instance.put<CommonApiType<{item: TaskType }>>(`/${todolistId}/tasks/${taskId}`, task);
+    return instance.put<CommonApiType<{item: TaskType }>>(`/todo-lists/${todolistId}/tasks/${taskId}`, task);
   },
   deleteTask(taskId: string, todolistId: string) {
-    return instance.delete<CommonApiType<{ }>>(`/${todolistId}/tasks/${taskId}`);
+    return instance.delete<CommonApiType<{ }>>(`/todo-lists/${todolistId}/tasks/${taskId}`);
+  },
+  me() {
+    return instance.get<CommonApiType<{ id: string, login: string, email: string}>>(`/auth/me`);
+  },
+  me1(login: string, email: string) {
+    return instance.get<CommonApiType<{ }>>(`/todo-lists/auth/me`);
   }
 }
