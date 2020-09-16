@@ -78,7 +78,12 @@ export const api = {
   me() {
     return instance.get<CommonApiType<{ id: string, login: string, email: string}>>(`/auth/me`);
   },
-  me1(login: string, email: string) {
-    return instance.get<CommonApiType<{ }>>(`/todo-lists/auth/me`);
+  login(email: string, password: string) {
+    return instance.post<CommonApiType<{email: string, password: string}>>(`/auth/login`, {
+      email,
+      password});
+  },
+  logout() {
+    return instance.delete(`auth/login`)
   }
 }

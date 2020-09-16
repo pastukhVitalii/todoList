@@ -4,6 +4,9 @@
     top: 8px;
     right: 10px;
 }
+.authFree {
+    width: 200px;
+}
 
 .todoList {
     width: 300px;

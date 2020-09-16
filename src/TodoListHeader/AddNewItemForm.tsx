@@ -1,6 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent} from "react";
 import '../TodoList.css'
-import Button from "../common/Button/Button";
+import Button from "../common/Button/button/Button";
 
 type OwnPropsType = {
     addItem: (newText: string) => void,
@@ -14,6 +14,7 @@ type StateType = {
 }
 
 class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
+
     state: StateType = {
         error: false,
         title: ''

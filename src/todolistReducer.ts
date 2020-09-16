@@ -16,6 +16,7 @@ export const LOADING_TODO = "TodoList/Reducer/LOADING_TODO";
 export const LOADING_TASKS = "TodoList/Reducer/LOADING_TASKS";
 export const SET_USER_DATA = "TodoList/Reducer/SET_USER_DATA";
 export const LOGIN_SUCCESS = "TodoList/Reducer/LOGIN_SUCCESS";
+export const LOGOUT_SUCCESS = "TodoList/Reducer/LOGOUT_SUCCESS";
 
 type initialStateType = {
     todolists: Array<TodoType>
@@ -140,9 +141,13 @@ const todolistReducer = (state: initialStateType = initialState, action: Actions
             return {
                 ...state, login: action.login, isAuth: true
             }
-            case LOGIN_SUCCESS:
+        case LOGIN_SUCCESS:
             return {
                 ...state, isAuth: true
+            }
+            case LOGOUT_SUCCESS:
+            return {
+                ...state, isAuth: false
             }
     }
     return state
@@ -163,6 +168,7 @@ type ActionsType =
     | LoadingTasksActionType
     | SetAuthUserDataActionType
     | LoginSuccessActionType
+    | LogoutSuccessActionType
 
 
 type UpdateTaskSuccessActionType = {
@@ -220,6 +226,9 @@ type SetAuthUserDataActionType = {
 type LoginSuccessActionType = {
     type: typeof LOGIN_SUCCESS
 }
+type LogoutSuccessActionType = {
+    type: typeof LOGOUT_SUCCESS
+}
 
 // Action creator
 
@@ -260,6 +269,9 @@ export const setAuthUserDataAC = (userId: string | any, login: string | any, ema
 }
 export const loginSuccess = (): LoginSuccessActionType => {
     return {type: LOGIN_SUCCESS}
+}
+export const logoutSuccess = (): LogoutSuccessActionType => {
+    return {type: LOGOUT_SUCCESS}
 }
 
 // THUNK
@@ -329,18 +341,24 @@ export const setAuthUserDataTC = () => (dispatch: ThunkDispatch1) => {
     return api.me()
         .then(response => {
             if (response.data.resultCode === 0) {
-                let id = response.data.data.id;
-                let login = response.data.data.login;
-                let email = response.data.data.email;
+                let {id, login, email} = response.data.data
                 dispatch(setAuthUserDataAC(id, login, email));
             }
         });
 }
-export const signInTC = (login: string, email: string) => (dispatch: ThunkDispatch1) => {
-    return api.me1(login, email)
+export const signInTC = (email: string, password: string) => (dispatch: ThunkDispatch1) => {
+    return api.login(email, password)
         .then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(loginSuccess());
+            }
+        });
+}
+export const signOutTC = () => (dispatch: ThunkDispatch1) => {
+    return api.logout()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(logoutSuccess());
             }
         });
 }

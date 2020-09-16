@@ -1,6 +1,6 @@
 import React from "react";
 import '../TodoList.css';
-import Button from "../common/Button/Button";
+import Button from "../common/Button/button/Button";
 
 type StateType = {
     isHidden: boolean

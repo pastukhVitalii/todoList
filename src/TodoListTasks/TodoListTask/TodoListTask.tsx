@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from "react";
 import {TaskType} from "../../types/entities";
-import Button from "../../common/Button/Button";
+import Button from "../../common/Button/button/Button";
 import '../../TodoList.css';
 
 type StateType = {
