@@ -18,7 +18,7 @@ export const SET_USER_DATA = "TodoList/Reducer/SET_USER_DATA";
 export const LOGIN_SUCCESS = "TodoList/Reducer/LOGIN_SUCCESS";
 export const LOGOUT_SUCCESS = "TodoList/Reducer/LOGOUT_SUCCESS";
 
-type initialStateType = {
+export type initialStateType = {
     todolists: Array<TodoType>
     loadingTodo: boolean,
     loadingTasks: boolean,
@@ -346,14 +346,19 @@ export const setAuthUserDataTC = () => (dispatch: ThunkDispatch1) => {
             }
         });
 }
+
 export const signInTC = (email: string, password: string) => (dispatch: ThunkDispatch1) => {
     return api.login(email, password)
         .then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(loginSuccess());
+                dispatch(setAuthUserDataTC());
+                dispatch(setTodolistsTC());
             }
-        });
+            alert(response.data.messages)
+        }).catch(Error)
 }
+
 export const signOutTC = () => (dispatch: ThunkDispatch1) => {
     return api.logout()
         .then(response => {
