@@ -6,9 +6,9 @@ type StateType = {
     isHidden: boolean
 }
 
-type OwnPropsType = {
-    changeFilter: (newFilterValue: string) => void
-    filterValue: string
+export type OwnPropsType = {
+    changeFilter: (newFilterValue: 'All' | 'Completed' | 'Active') => void
+    filterValue: 'All' | 'Completed' | 'Active'
 }
 
 class TodoListFooter extends React.Component<OwnPropsType, StateType> {

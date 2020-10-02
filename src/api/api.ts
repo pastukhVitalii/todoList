@@ -4,7 +4,7 @@ import {TaskType, TodoType} from "../types/entities";
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.1",
   withCredentials: true,
-  headers: {}
+  headers: {'API-KEY':'eec707e4-21e7-4972-ae6a-c9f0a894d660'}
 })
 
 /*resultCode: 0

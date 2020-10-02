@@ -1,7 +1,7 @@
 import React from 'react';
 import './Input.css';
 
-type OwnPropTypes = {
+export type OwnPropTypes = {
     value: string
     type?: string
     placeholder: string
@@ -10,15 +10,15 @@ type OwnPropTypes = {
 }
 
 const Input = (props: OwnPropTypes) => {
-    const errorClass = props.error? 'error' : '';
+    const errorClass = props.error ? 'error' : '';
     return (
-      <div className='input'>
-        <input type="text" placeholder= {props.placeholder}
-               className={`${props.type} + ${errorClass}`}
-               value={props.value}
-               onChange={props.onChange}
-               autoFocus={true}/>
-      </div>
+        <div className='input'>
+            <input type="text" placeholder={props.placeholder}
+                   className={`${props.type} + ${errorClass}`}
+                   value={props.value}
+                   onChange={(e) => props.onChange(e)}
+                   autoFocus={true}/>
+        </div>
     );
 }
 

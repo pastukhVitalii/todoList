@@ -17,7 +17,7 @@ import {TaskType, TodoUpdateObject} from "./types/entities";
 import {AppStateType} from "./store";
 
 type StateType = {
-    filterValue: string
+    filterValue: 'All' | 'Completed' | 'Active'
 }
 
 type OwnPropsType = {
@@ -59,7 +59,7 @@ class TodoList extends React.Component<OwnPropsType & MapDispatchPropsType, Stat
         this.props.addTaskTC(newText, this.props.id)
     }
 
-    changeFilter = (newFilterValue: string) => {
+    changeFilter = (newFilterValue: 'All' | 'Completed' | 'Active') => {
         this.setState({filterValue: newFilterValue});
     };
 

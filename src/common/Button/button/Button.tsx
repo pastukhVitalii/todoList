@@ -1,9 +1,9 @@
 import React from 'react';
 import './Button.css';
 
-type OwnPropTypes = {
+export type OwnPropTypes = {
     btnName: string
-    type: string
+    type: 'default' | 'primary' | 'danger' | string
     disable?: boolean
     small?: boolean
     active? : string
@@ -12,7 +12,7 @@ type OwnPropTypes = {
 const Button = (props: OwnPropTypes) => {
     let small = props.small? 'small': '';
     return (
-        <button className={`button + ${props.type} + ${small}`} onClick={props.onClick}> {props.btnName}</button>
+        <button className={`button + ${props.type} + ${small}`} onClick={ (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => props.onClick()} disabled={props.disable}> {props.btnName}</button>
     )
 }
 

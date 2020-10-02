@@ -2,7 +2,7 @@ import React, {ChangeEvent, KeyboardEvent} from "react";
 import '../TodoList.css'
 import Button from "../common/Button/button/Button";
 
-type OwnPropsType = {
+export type OwnPropsType = {
     addItem: (newText: string) => void,
     placeholder: string,
     btnName: string
@@ -32,12 +32,14 @@ class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
             });
         }
     };
+
     onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({
             error: false,
             title: e.currentTarget.value
-        })
+        });
     }
+
     onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             this.onAddItemClick();
