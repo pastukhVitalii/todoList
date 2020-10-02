@@ -19,6 +19,7 @@ export const Primary = Template.bind({});
 Primary.args = {
     type: 'primary',
     btnName: 'Button',
+    small: false,
 };
 
 export const Danger = Template.bind({});

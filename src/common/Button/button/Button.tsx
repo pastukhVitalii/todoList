@@ -8,9 +8,10 @@ export type OwnPropTypes = {
     small?: boolean
     active? : string
     onClick: () => void
+    test?: any
 }
 const Button = (props: OwnPropTypes) => {
-    let small = props.small? 'small': '';
+    let small = !props.small? '': 'small';
     return (
         <button className={`button + ${props.type} + ${small}`} onClick={ (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => props.onClick()} disabled={props.disable}> {props.btnName}</button>
     )
