@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://pastukhVitalii.github.io/todolist",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.4.0",
     "@types/jest": "^26.0.3",
     "@types/node": "^14.0.14",
     "@types/react": "^16.9.41",
@@ -49,6 +50,7 @@
     "@storybook/addon-actions": "^6.0.22",
     "@storybook/addon-essentials": "^6.0.22",
     "@storybook/addon-links": "^6.0.22",
+    "@storybook/addon-storyshots": "^6.0.28",
     "@storybook/node-logger": "^6.0.22",
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.0.22",
