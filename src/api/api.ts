@@ -7,42 +7,12 @@ const instance = axios.create({
   headers: {'API-KEY':'eec707e4-21e7-4972-ae6a-c9f0a894d660'}
 })
 
-/*resultCode: 0
-messages: [],
-    data: {
-    item:   {
-        "id": "a2dfe62b-ebce-4b37-9581-1cc77ebc999f",
-            "title": "important",
-            "addedDate": "2019-07-30T12:23:49.677",
-            "order": 0*/
-
 type CommonApiType<T> = {
     resultCode: 0| 1 | 100
     messages: Array<string>
     data: T,
 
 }
-
-/*type CreateTodoType = {
-    resultCode: 0| 1 | 100
-    messages: Array<string>
-    data: {
-        item: TodoType
-    }
-}
-
-type ResponseTaskType2 = {
-    resultCode: 0 | 1 | 100
-    messages: Array<string>
-    data: {
-        item: TaskType
-    }
-}
-type ResponseTaskType3 = {
-    resultCode: 0 | 1 | 100
-    messages: Array<string>
-    data: {}
-}*/
 
 export const api = {
 

@@ -145,7 +145,7 @@ const todolistReducer = (state: initialStateType = initialState, action: Actions
             return {
                 ...state, isAuth: true
             }
-            case LOGOUT_SUCCESS:
+        case LOGOUT_SUCCESS:
             return {
                 ...state, isAuth: false
             }
@@ -256,14 +256,17 @@ export const updateTaskAC = (taskId: string, todolistId: string, obj: TodoUpdate
     todolistId,
     obj
 });
-export const loadingTodoAC = (isActive: boolean): LoadingTodoActionType => ({type: LOADING_TODO, isActive});
-export const loadingTasksAC = (isActive: boolean): LoadingTasksActionType => ({type: LOADING_TASKS, isActive});
+
 export const setTodolistAC = (todolists: Array<TodoType>): GetTodolistsSuccessActionType => {
     return {type: SET_TODOLIST, todolists: todolists}
 }
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): GetTasksSuccessActionType => {
     return {type: SET_TASKS, tasks, todolistId}
 }
+
+export const loadingTodoAC = (isActive: boolean): LoadingTodoActionType => ({type: LOADING_TODO, isActive});
+export const loadingTasksAC = (isActive: boolean): LoadingTasksActionType => ({type: LOADING_TASKS, isActive});
+
 export const setAuthUserDataAC = (userId: string | any, login: string | any, email: string | any): SetAuthUserDataActionType => {
     return {type: SET_USER_DATA, userId, login, email}
 }
@@ -355,7 +358,6 @@ export const signInTC = (email: string, password: string) => (dispatch: ThunkDis
                 dispatch(setAuthUserDataTC());
                 dispatch(setTodolistsTC());
             }
-            alert(response.data.messages)
         }).catch(Error)
 }
 

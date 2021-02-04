@@ -91,8 +91,8 @@ class App extends React.Component<PropsType, StateType> {
                 <div className="authorization">
                     {this.props.isAuth ? this.props.login :
                         <div className={'authorizationForm'}>
-                            <div className={'authFree'}>Hey!! For testing please use this email free@samuraijs.com
-                                and this password free
+                            <div className={'authFree'}>Hey!! For testing please use this email pastukh.v.7@gmail.com
+                                and this password SNSqwerty07
                             </div>
                             <Input value={this.state.email} placeholder={'Login'} onChange={this.setLogin} error={this.state.error}/>
                             <Input value={this.state.password} placeholder={'Password'} onChange={this.setPassword} error={this.state.error}/>
